@@ -20,26 +20,23 @@ cat $SPLITS/test.splits  | xargs cat > test.data.txt
 
 
 echo "Step 3: Basic filtering on train/dev."
-python2.7 $SCRIPTS/filter.py train.data.txt > train.data.filter.txt
-python2.7 $SCRIPTS/filter.py valid.data.txt > valid.data.filter.txt
+# python2.7 $SCRIPTS/filter.py train.data.txt > train.data.filter.txt
+# python2.7 $SCRIPTS/filter.py valid.data.txt > valid.data.filter.txt
 
 
 echo "Step 4: Compile dictionary."
-python2.7 $SCRIPTS/make_dict.py $WORK/train.data.filter.txt  $WORK/train $UNK
+python2.7 $SCRIPTS/make_dict.py train.data.txt train $UNK
 
 
 echo "Step 5: Construct title-article files."
-python2.7 $SCRIPTS/pull.py trg_lc $WORK/train.title.dict   < $WORK/train.data.filter.txt > $WORK/train.title.txt
-python2.7 $SCRIPTS/pull.py src_lc $WORK/train.article.dict < $WORK/train.data.filter.txt > $WORK/train.article.txt
+python2.7 $SCRIPTS/pull.py trg_lc train.title.dict   < train.data.txt > train.title.txt
+python2.7 $SCRIPTS/pull.py src_lc train.article.dict < train.data.txt > train.article.txt
 
-python2.7 $SCRIPTS/pull.py trg_lc $WORK/train.title.dict   < $WORK/valid.data.txt > $WORK/valid.title.txt
-python2.7 $SCRIPTS/pull.py src_lc $WORK/train.article.dict < $WORK/valid.data.txt > $WORK/valid.article.txt
+python2.7 $SCRIPTS/pull.py trg_lc train.title.dict   < valid.data.txt > valid.title.txt
+python2.7 $SCRIPTS/pull.py src_lc train.article.dict < valid.data.txt > valid.article.txt
 
-python2.7 $SCRIPTS/pull.py trg_lc $WORK/train.title.dict   < $WORK/valid.data.filter.txt > $WORK/valid.title.filter.txt
-python2.7 $SCRIPTS/pull.py src_lc $WORK/train.article.dict < $WORK/valid.data.filter.txt > $WORK/valid.article.filter.txt
-
-python2.7 $SCRIPTS/pull.py trg_lc $WORK/train.title.dict   < $WORK/test.data.txt > $WORK/test.title.txt
-python2.7 $SCRIPTS/pull.py src_lc $WORK/train.article.dict < $WORK/test.data.txt > $WORK/test.article.txt
+python2.7 $SCRIPTS/pull.py trg_lc train.title.dict   < test.data.txt > test.title.txt
+python2.7 $SCRIPTS/pull.py src_lc train.article.dict < test.data.txt > test.article.txt
 
 
 echo "Step 6: Constructing torch data files."
