@@ -26,7 +26,7 @@ except OSError:
     pass
 
 # Strip off .gz ending
-end = "/".join(sys.argv[1].split("/")[-2:])[:-len(".xml.gz")] + ".txt"
+end = "/".join(sys.argv[1].split("/")[-2:])[:-len(".gz")] + ".txt"
 
 out = open(sys.argv[2] + end, "w")
 
