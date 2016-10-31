@@ -64,7 +64,7 @@ def remove_digits(parse):
 
 
 for l in gzip.open(sys.argv[1]):
-    l = l.strip()
+    l = l.strip().decode("ascii","ignore").encode("ascii")
     if MODE == HEAD:
         title_parse = l
         MODE = NEXT
