@@ -16,6 +16,7 @@ import sys
 import os
 import re
 import gzip
+import nltk
 #@lint-avoid-python-3-compatibility-imports
 
 # Make directory for output if it doesn't exist
@@ -36,6 +37,7 @@ MODE = NONE
 title_parse = ""
 article_parse = []
 
+
 # FIX: Some parses are mis-parenthesized.
 def fix_paren(parse):
     if len(parse) < 2:
@@ -44,33 +46,40 @@ def fix_paren(parse):
         return parse[2:-1]
     return parse
 
+
 def get_words(parse):
     words = []
-    for w in parse.split():
+    for w in nltk.word_tokenize(parse):
         if w[-1] == ')':
             words.append(w.strip(")"))
-            if words[-1] == ".":
-                break
+        else:
+            words.append(w)
+        if words[-1] == ".":
+            break
     return words
+
 
 def remove_digits(parse):
     return re.sub(r'\d', '#', parse)
 
+
 for l in gzip.open(sys.argv[1]):
+    l = l.strip()
     if MODE == HEAD:
-        title_parse = remove_digits(fix_paren(l.strip()))
+        title_parse = l
         MODE = NEXT
 
     if MODE == TEXT:
-        article_parse.append(remove_digits(fix_paren(l.strip())))
+        if not l == "</P>":
+            article_parse.append(l)
 
-    if MODE == NONE and l.strip() == "<HEADLINE>":
+    if MODE == NONE and l == "<HEADLINE>":
         MODE = HEAD
 
-    if MODE == NEXT and l.strip() == "<P>":
+    if MODE == NEXT and l == "<P>":
         MODE = TEXT
 
-    if MODE == TEXT and l.strip() == "</P>":
+    if MODE == TEXT and l == "</P>":
         articles = []
         # Annotated gigaword has a poor sentence segmenter.
         # Ensure there is a least a period.
@@ -80,11 +89,11 @@ for l in gzip.open(sys.argv[1]):
             if "(. .)" in article_parse[i]:
                 break
 
-        article_parse = "(TOP " + " ".join(articles) + ")"
+        article_parse = " ".join(articles)
 
         # title_parse \t article_parse \t title \t article
         print >>out, "\t".join([title_parse, article_parse,
-                                " ".join(get_words(title_parse)),
-                                " ".join(get_words(article_parse))])
+                                remove_digits(" ".join(get_words(title_parse))),
+                                remove_digits(" ".join(get_words(article_parse)))])
         article_parse = []
         MODE = NONE
