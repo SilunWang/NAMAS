@@ -68,7 +68,7 @@ These files can be used to train the ABS system or be used by other baseline mod
 Once the data set has been constructed, we provide a simple script to train
 the model.
 
-   > ./train_model.sh working_dir/ model.th
+   > ./train_model.sh working_dir model.th
 
 
 The training process consists of two stages. First we convert the text
@@ -78,7 +78,7 @@ conditional NNLM on this representation.
 Once the model has been fully trained (this may require 3-4 days),
 you can use the test script to produce summaries of any plain text file.w
 
-   > ./test_model.sh working_dir/valid.article.filter.txt model.th length_of_summary
+   > ./test_model.sh working_dir/valid.article.filter.txt working_dir/models/model.th length_of_summary
 
 
 ### Training options
