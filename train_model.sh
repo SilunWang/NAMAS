@@ -14,9 +14,9 @@ th -i $ABS/summary/train.lua -titleDir  $OUT_DIR/train/title/ \
  -articleDir  $OUT_DIR/train/article/ \
  -modelFilename  $MDL_DIR/$2 \
  -miniBatchSize  64 \
- -embeddingDim  64 \
+ -embeddingDim  200 \
  -bowDim  200 \
- -hiddenSize  64 \
+ -hiddenSize  400 \
  -epochs  20 \
  -learningRate 0.1 \
  -validArticleDir  $OUT_DIR/valid.filter/article/ \
