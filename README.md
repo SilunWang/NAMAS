@@ -214,7 +214,7 @@ simple output to one that ROUGE can handle.
 Export the ROUGE directory `export ROUGE={path_to_rouge}` and then run the eval scripts
 
 
-    > ./DUC/eval.sh DUC_data/clean_2003/
+    > ./DUC/eval.sh $ABS/DUC_data/clean_2003/
     FULL LENGTH
        ---------------------------------------------
        prefix ROUGE-1 Average_R: 0.17831 (95%-conf.int. 0.16916 - 0.18736)
